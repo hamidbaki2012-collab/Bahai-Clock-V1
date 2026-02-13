@@ -1,85 +1,22 @@
 {
-  "name": "Horloge Bahá'í - Temps et Calendrier Spirituel",
+  "name": "Horloge Bahá'í",
   "short_name": "Bahá'í Clock",
-  "description": "Application PWA bahá'íe avec horloge analogique, calendrier bahá'í, dates grégoriennes, lever et coucher du soleil, et support multilingue (FR/EN/ES/AR/FA).",
-  "start_url": "/index.html?v=2",
+  "description": "Horloge bahá'íe avec calendrier spirituel et heures de soleil",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#1a237e",
   "theme_color": "#1a237e",
-  "orientation": "portrait",
   "icons": [
     {
-      "src": "/icons/icon-72x72-v2.png?t=20260214",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-96x96-v2.png?t=20260214",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-128x128-v2.png?t=20260214",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-144x144-v2.png?t=20260214",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-152x152-v2.png?t=20260214",
-      "sizes": "152x152",
-      "type": "image/png",      
-    },
-    {
-      "src": "/icons/icon-192x192-v2.png?t=20260214",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "/icons/icon-384x384-v2.png?t=20260214",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-512x512-v2.png?t=20260214",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/png"
     }
   ],
-  "categories": ["utilities", "productivity", "spiritual", "lifestyle"],
-  "screenshots": [
-    {
-      "src": "/screenshots/screenshot-1.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "platform": "android"
-    }
-  ],
-  "lang": "fr",
-  "dir": "ltr",
-  "scope": "/",
-  "display_override": ["fullscreen", "minimal-ui"],
-  "shortcuts": [
-    {
-      "name": "Changer de langue",
-      "short_name": "Langue",
-      "description": "Changer la langue de l'application",
-      "url": "/index.html?lang=fr",
-      "icons": [
-        {
-          "src": "/icons/icon-192x192-v2.png",
-          "sizes": "192x192"
-        }
-      ]
-    }
-  ]
+  "lang": "fr"
 }
