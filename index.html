@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a237e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Horloge Bahá'í">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Manifest pour PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <title>Horloge Bahá'í</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #212529;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: white;
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 25px 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15),
+                        0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            width: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1.5px solid rgba(0, 0, 0, 0.06);
+            position: relative;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .language-selector {
+            background: white;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            font-weight: 600;
+            font-size: 13px;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .language-selector:hover {
+            background: #f8f9fa;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .language-selector::after {
+            content: '▼';
+            font-size: 7px;
+            opacity: 0.6;
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            padding: 6px 0;
+            min-width: 140px;
+            display: none;
+            flex-direction: column;
+            gap: 3px;
+            z-index: 101;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .language-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #495057;
+            transition: all 0.2s ease;
+        }
+
+        .language-option:hover {
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+
+        .language-option.active {
+            background: #e3f2fd;
+            color: #1976d2;
+            font-weight: 600;
+        }
+
+        .language-flag {
+            font-size: 16px;
+            width: 22px;
+            text-align: center;
+        }
+
+        /* ÉTOILE BAHÁ'ÍE À 9 BRANCHES AUTHENTIQUE - CORRIGÉE */
+        .bahai-star-container {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+            width: 38px;
+            height: 38px;
+        }
+
+        .bahai-star-svg {
+            width: 100%;
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #2c3e50;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            line-height: 1.2;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.7;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            color: #6c757d;
+        }
+
+        .holy-days-banner {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .holy-day-item {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 500;
+            border: 1.5px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            min-width: 150px;
+            max-width: 100%;
+        }
+
+        .holy-day-left {
+            border-left: 3px solid #f72585;
+            color: #b5179e;
+        }
+
+        .holy-day-right {
+            border-right: 3px solid #4361ee;
+            color: #3a56d4;
+            text-align: right;
+        }
+
+        .holy-day-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+            font-size: 12px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .dates-row {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            align-items: stretch;
+            gap: 15px;
+        }
+
+        .date-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .gregorian-date, .bahai-date {
+            background: #f8f9fa;
+            padding: 16px 20px;
+            border-radius: 18px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1.5px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .gregorian-date:hover, .bahai-date:hover {
+            background: #f1f3f5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .gregorian-date {
+            border-left: 3px solid #4361ee;
+        }
+
+        .bahai-date {
+            border-right: 3px solid #f72585;
+        }
+
+        .date-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .date-value {
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 1.4;
+            color: #212529;
+        }
+
+        .clock-container {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 15px auto;
+        }
+
+        .clock-face {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1),
+                        inset 0 0 15px rgba(0, 0, 0, 0.03);
+            border: 10px solid #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .clock-face::before {
+            content: '';
+            position: absolute;
+            width: 85%;
+            height: 85%;
+            background: radial-gradient(circle, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.03) 100%);
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .clock-center {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #2c3e50;
+            border-radius: 50%;
+            z-index: 10;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .hour-marks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+        }
+
+        .hour-mark {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hour-mark div {
+            width: 1.2px;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.15);
+            margin-top: 22px;
+            border-radius: 2px;
+        }
+
+        .hour-mark:nth-child(5n+1) div {
+            height: 14px;
+            width: 2px;
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .hour-mark:nth-child(1) div {
+            height: 18px;
+            width: 2.5px;
+            background: #4361ee;
+        }
+
+        .hour-hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            width: 5px;
+            height: 70px;
+            background: linear-gradient(to top, #f72585, #b5179e);
+            margin-left: -2.5px;
+            border-radius: 2.5px 2.5px 2px 2px;
+            z-index: 6;
+            box-shadow: 0 0 6px rgba(247, 37, 133, 0.4);
+            transform: rotate(0deg);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .minute-hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            width: 2.5px;
+            height: 100px;
+            background: linear-gradient(to top, #4361ee, #4895ef);
+            margin-left: -1.25px;
+            border-radius: 1.25px 1.25px 1px 1px;
+            z-index: 5;
+            box-shadow: 0 0 6px rgba(67, 97, 238, 0.3);
+            transform: rotate(0deg);
+            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sun-info {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 16px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+            border: 1.5px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+            height: 100%;
+        }
+
+        .sun-info:hover {
+            background: #f1f3f5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .sunrise {
+            border-left: 3px solid #ffb703;
+        }
+
+        .sunset {
+            border-right: 3px solid #4cc9f0;
+        }
+
+        .sun-icon {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .sunrise .sun-icon {
+            color: #ffb703;
+        }
+
+        .sunset .sun-icon {
+            color: #4cc9f0;
+        }
+
+        .sun-label {
+            font-size: 11px;
+            opacity: 0.7;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: #495057;
+        }
+
+        .sun-time {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .location {
+            margin-top: 12px;
+            font-size: 13px;
+            opacity: 0.75;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: #495057;
+            min-height: 22px;
+        }
+
+        .precision-indicator {
+            margin-top: 6px;
+            font-size: 10px;
+            text-align: center;
+            color: #2ecc71;
+            font-weight: 600;
+        }
+
+        @media (min-width: 481px) {
+            .dates-row {
+                flex-direction: row;
+            }
+            
+            .clock-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .header h1 {
+                font-size: 30px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .container {
+                border-radius: 35px;
+                padding: 40px 30px;
+            }
+            
+            .clock-container {
+                width: 320px;
+                height: 320px;
+            }
+            
+            .header h1 {
+                font-size: 34px;
+            }
+            
+            .bahai-star-container {
+                width: 45px;
+                height: 45px;
+                margin-left: 15px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .dates-row {
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        html[dir="rtl"] .container {
+            direction: rtl;
+            text-align: right;
+        }
+
+        html[dir="rtl"] .holy-day-left {
+            border-left: none;
+            border-right: 3px solid #f72585;
+            text-align: right;
+        }
+
+        html[dir="rtl"] .holy-day-right {
+            border-right: none;
+            border-left: 3px solid #4361ee;
+            text-align: left;
+        }
+
+        html[dir="rtl"] .gregorian-date {
+            border-left: none;
+            border-right: 3px solid #4361ee;
+        }
+
+        html[dir="rtl"] .bahai-date {
+            border-right: none;
+            border-left: 3px solid #f72585;
+        }
+
+        html[dir="rtl"] .sunrise {
+            border-left: none;
+            border-right: 3px solid #ffb703;
+        }
+
+        html[dir="rtl"] .sunset {
+            border-right: none;
+            border-left: 3px solid #4cc9f0;
+        }
+
+        #installBtn {
+            display: none;
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.4);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #installBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(76, 175, 80, 0.5);
+        }
+
+        #installBtn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <div class="language-selector" id="langSelector">
+                    <span class="language-flag" id="currentFlag">🇫🇷</span>
+                    <span id="currentLang">FR</span>
+                </div>
+                
+                <div class="holy-days-banner" id="holyDaysBanner">
+                </div>
+            </div>
+            
+            <h1 id="title">
+                🕐 Horloge Bahá'í
+                <!-- ÉTOILE BAHÁ'ÍE À 9 BRANCHES AUTHENTIQUE - VÉRIFIÉE -->
+                <div class="bahai-star-container">
+                    <svg class="bahai-star-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Étoile bahá'íe authentique à 9 branches - CORRIGÉE -->
+                        <path d="M50,5 L56,25 L75,18 L70,38 L92,42 L72,52 L88,70 L65,68 L68,90 L50,75 L32,90 L35,68 L12,70 L28,52 L8,42 L30,38 L25,18 L44,25 Z" 
+                              fill="#d4af37" 
+                              stroke="#b8860b" 
+                              stroke-width="2.8"/>
+                    </svg>
+                </div>
+            </h1>
+            <div class="subtitle" id="subtitle">Temps et Calendrier Spirituel</div>
+        </div>
+
+        <div class="main-content">
+            <div class="dates-row">
+                <div class="date-card">
+                    <div class="gregorian-date">
+                        <div class="date-label" id="gregorianLabel">Date Grégorienne</div>
+                        <div class="date-value" id="gregorianDate">Chargement...</div>
+                    </div>
+                    <div class="sun-info sunrise">
+                        <div class="sun-icon">🌅</div>
+                        <div class="sun-label" id="sunriseLabel">Lever du soleil</div>
+                        <div class="sun-time" id="sunriseTime">--:--</div>
+                    </div>
+                </div>
+
+                <div class="clock-container">
+                    <div class="clock-face">
+                        <div class="hour-marks" id="hourMarks"></div>
+                        <div class="hour-hand" id="hourHand"></div>
+                        <div class="minute-hand" id="minuteHand"></div>
+                        <div class="clock-center"></div>
+                    </div>
+                </div>
+
+                <div class="date-card">
+                    <div class="bahai-date">
+                        <div class="date-label" id="bahaiLabel">Date Bahá'í</div>
+                        <div class="date-value" id="bahaiDate">Chargement...</div>
+                    </div>
+                    <div class="sun-info sunset">
+                        <div class="sun-icon">🌇</div>
+                        <div class="sun-label" id="sunsetLabel">Coucher du soleil</div>
+                        <div class="sun-time" id="sunsetTime">--:--</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="location" id="location">📍 Détection de la localisation...</div>
+            <div class="precision-indicator" id="precisionIndicator">✅ Données précises</div>
+        </div>
+    </div>
+
+    <button id="installBtn">📲 Installer l'application</button>
+
+    <script>
+        // ========== SYSTÈME DE TRADUCTION MULTILINGUE ==========
+
+        const translations = {
+            fr: {
+                title: "🕐 Horloge Bahá'í",
+                subtitle: "Temps et Calendrier Spirituel",
+                gregorianLabel: "Date Grégorienne",
+                bahaiLabel: "Date Bahá'í",
+                sunriseLabel: "Lever du soleil",
+                sunsetLabel: "Coucher du soleil",
+                locationDetecting: "📍 Détection de la localisation...",
+                locationDefault: "📍 Luxembourg (par défaut)",
+                locationUnsupported: "📍 Géolocalisation non supportée",
+                precisionExact: "✅ Données précises",
+                precisionApproximate: "⚠️ Données approximatives",
+                ayyamTitle: "Ayyám-i-Há",
+                ayyamPeriod: "du 24 février - 1 mars",
+                ayyamNote: "(après coucher du soleil)",
+                feastAlaTitle: "Fête 19j 'Alá'",
+                feastAlaDate: "le 2 mars",
+                feastAlaNote: "(après coucher du soleil du 1er mars)",
+                feastBahaTitle: "Fête 19j Bahá",
+                feastBahaDate: "le 21 mars",
+                feastBahaNote: "(après coucher du soleil du 20 mars)",
+                langCode: "FR",
+                flag: "🇫🇷",
+                dir: "ltr",
+                separator: " - "
+            },
+            en: {
+                title: "🕐 Bahá'í Clock",
+                subtitle: "Time and Spiritual Calendar",
+                gregorianLabel: "Gregorian Date",
+                bahaiLabel: "Bahá'í Date",
+                sunriseLabel: "Sunrise",
+                sunsetLabel: "Sunset",
+                locationDetecting: "📍 Detecting location...",
+                locationDefault: "📍 Luxembourg (default)",
+                locationUnsupported: "📍 Geolocation not supported",
+                precisionExact: "✅ Precise data",
+                precisionApproximate: "⚠️ Approximate data",
+                ayyamTitle: "Ayyám-i-Há",
+                ayyamPeriod: "February 24 - March 1",
+                ayyamNote: "(after sunset)",
+                feastAlaTitle: "19-Day Feast 'Alá'",
+                feastAlaDate: "March 2",
+                feastAlaNote: "(after sunset on March 1)",
+                feastBahaTitle: "19-Day Feast Bahá",
+                feastBahaDate: "March 21",
+                feastBahaNote: "(after sunset on March 20)",
+                langCode: "EN",
+                flag: "🇬🇧",
+                dir: "ltr",
+                separator: " - "
+            },
+            es: {
+                title: "🕐 Reloj Bahá'í",
+                subtitle: "Tiempo y Calendario Espiritual",
+                gregorianLabel: "Fecha Gregoriana",
+                bahaiLabel: "Fecha Bahá'í",
+                sunriseLabel: "Amanecer",
+                sunsetLabel: "Atardecer",
+                locationDetecting: "📍 Detectando ubicación...",
+                locationDefault: "📍 Luxemburgo (predeterminado)",
+                locationUnsupported: "📍 Geolocalización no compatible",
+                precisionExact: "✅ Datos precisos",
+                precisionApproximate: "⚠️ Datos aproximados",
+                ayyamTitle: "Ayyám-i-Há",
+                ayyamPeriod: "24 de febrero - 1 de marzo",
+                ayyamNote: "(después de la puesta del sol)",
+                feastAlaTitle: "Fiesta de 19 días 'Alá'",
+                feastAlaDate: "2 de marzo",
+                feastAlaNote: "(después de la puesta del sol del 1 de marzo)",
+                feastBahaTitle: "Fiesta de 19 días Bahá",
+                feastBahaDate: "21 de marzo",
+                feastBahaNote: "(después de la puesta del sol del 20 de marzo)",
+                langCode: "ES",
+                flag: "🇪🇸",
+                dir: "ltr",
+                separator: " - "
+            },
+            ar: {
+                title: "🕐 ساعة البهائي",
+                subtitle: "الوقت والتقويم الروحي",
+                gregorianLabel: "التاريخ الميلادي",
+                bahaiLabel: "التاريخ البهائي",
+                sunriseLabel: "شروق الشمس",
+                sunsetLabel: "غروب الشمس",
+                locationDetecting: "📍 جاري الكشف عن الموقع...",
+                locationDefault: "📍 لوكسمبورغ (افتراضي)",
+                locationUnsupported: "📍 الموقع غير مدعوم",
+                precisionExact: "✅ بيانات دقيقة",
+                precisionApproximate: "⚠️ بيانات تقريبية",
+                ayyamTitle: "أيام الهاء",
+                ayyamPeriod: "24 فبراير - 1 مارس",
+                ayyamNote: "(بعد غروب الشمس)",
+                feastAlaTitle: "عيد 19 يوماً العلا",
+                feastAlaDate: "2 مارس",
+                feastAlaNote: "(بعد غروب الشمس في 1 مارس)",
+                feastBahaTitle: "عيد 19 يوماً بهاء",
+                feastBahaDate: "21 مارس",
+                feastBahaNote: "(بعد غروب الشمس في 20 مارس)",
+                langCode: "AR",
+                flag: "🇦🇪",
+                dir: "rtl",
+                separator: "، "
+            },
+            fa: {
+                title: "🕐 ساعت بهائی",
+                subtitle: "زمان و تقویم معنوی",
+                gregorianLabel: "تاریخ میلادی",
+                bahaiLabel: "تاریخ بهائی",
+                sunriseLabel: "طلوع آفتاب",
+                sunsetLabel: "غروب آفتاب",
+                locationDetecting: "📍 در حال تشخیص موقعیت...",
+                locationDefault: "📍 لوکزامبورگ (پیش‌فرض)",
+                locationUnsupported: "📍 موقعیت پشتیبانی نمی‌شود",
+                precisionExact: "✅ داده‌های دقیق",
+                precisionApproximate: "⚠️ داده‌های تقریبی",
+                ayyamTitle: "اَیّامِ ها",
+                ayyamPeriod: "۲۴ فوریه - ۱ مارس",
+                ayyamNote: "(بعد از غروب آفتاب)",
+                feastAlaTitle: "جشن ۱۹ روزه علا",
+                feastAlaDate: "۲ مارس",
+                feastAlaNote: "(بعد از غروب آفتاب در ۱ مارس)",
+                feastBahaTitle: "جشن ۱۹ روزه بهاء",
+                feastBahaDate: "۲۱ مارس",
+                feastBahaNote: "(بعد از غروب آفتاب در ۲۰ مارس)",
+                langCode: "FA",
+                flag: "🇮🇷",
+                dir: "rtl",
+                separator: "، "
+            }
+        };
+
+        // ========== TRADUCTIONS DES MOIS ET JOURS BAHÁ'ÍS ==========
+
+        const BAHAI_MONTHS = {
+            fr: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            es: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            ar: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمة', 'كلمات', 'كمال', 'اسماء', 'عزت', 'مشية', 'علم', 'قدرة', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملك', 'علاء'],
+            fa: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمت', 'کلمات', 'کمال', 'اسماء', 'عزت', 'مشیت', 'علم', 'قدرت', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملک', 'علاء']
+        };
+
+        const BAHAI_DAYS = {
+            fr: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            es: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            ar: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمة', 'كلمات', 'كمال', 'اسماء', 'عزت', 'مشية', 'علم', 'قدرة', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملك', 'علاء'],
+            fa: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمت', 'کلمات', 'کمال', 'اسماء', 'عزت', 'مشیت', 'علم', 'قدرت', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملک', 'علاء']
+        };
+
+        // Détection automatique de la langue
+        function detectLanguage() {
+            const savedLang = localStorage.getItem('bahaiClockLang');
+            if (savedLang && translations[savedLang]) {
+                return savedLang;
+            }
+            
+            const browserLang = navigator.language.split('-')[0].toLowerCase();
+            if (translations[browserLang]) {
+                return browserLang;
+            }
+            
+            return 'fr';
+        }
+
+        let currentLang = detectLanguage();
+
+        // Application des traductions
+        function applyTranslations(lang) {
+            currentLang = lang;
+            localStorage.setItem('bahaiClockLang', lang);
+            
+            const t = translations[lang];
+            
+            // Mettre à jour tous les textes
+            document.getElementById('title').innerHTML = `
+                ${t.title}
+                <div class="bahai-star-container">
+                    <svg class="bahai-star-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50,5 L56,25 L75,18 L70,38 L92,42 L72,52 L88,70 L65,68 L68,90 L50,75 L32,90 L35,68 L12,70 L28,52 L8,42 L30,38 L25,18 L44,25 Z" 
+                              fill="#d4af37" 
+                              stroke="#b8860b" 
+                              stroke-width="2.8"/>
+                    </svg>
+                </div>
+            `;
+            document.getElementById('subtitle').textContent = t.subtitle;
+            document.getElementById('gregorianLabel').textContent = t.gregorianLabel;
+            document.getElementById('bahaiLabel').textContent = t.bahaiLabel;
+            document.getElementById('sunriseLabel').textContent = t.sunriseLabel;
+            document.getElementById('sunsetLabel').textContent = t.sunsetLabel;
+            document.getElementById('location').textContent = t.locationDetecting;
+            document.getElementById('precisionIndicator').textContent = t.precisionExact;
+            
+            // Mettre à jour le sélecteur de langue
+            document.getElementById('currentLang').textContent = t.langCode;
+            document.getElementById('currentFlag').textContent = t.flag;
+            
+            // Mettre à jour les options actives
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.lang === lang) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Direction du texte (RTL pour arabe et persan)
+            document.documentElement.setAttribute('lang', lang);
+            document.documentElement.setAttribute('dir', t.dir);
+            
+            // Mettre à jour les jours saints
+            updateHolyDaysDisplay();
+            
+            // Mettre à jour les dates
+            updateGregorianDate();
+            updateBahaiDate();
+            
+            // Mettre à jour la localisation avec la bonne langue
+            updateLocationAndSunTimes();
+        }
+
+        // ========== FONCTIONS PRINCIPALES ==========
+
+        // 1. MISE À JOUR DE L'HORLOGE
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+
+            const minuteAngle = (minutes / 60) * 360;
+            const hourAngle = ((hours + minutes / 60) / 12) * 360;
+
+            document.getElementById('minuteHand').style.transform = `rotate(${minuteAngle}deg)`;
+            document.getElementById('hourHand').style.transform = `rotate(${hourAngle}deg)`;
+        }
+
+        // 2. DATE GREGORIENNE (avec traduction)
+        function updateGregorianDate() {
+            const now = new Date();
+            
+            // Format selon la langue
+            const options = { 
+                weekday: 'short', 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric' 
+            };
+            
+            let formattedDate;
+            
+            if (currentLang === 'en') {
+                formattedDate = now.toLocaleDateString('en-US', options);
+            } else if (currentLang === 'es') {
+                formattedDate = now.toLocaleDateString('es-ES', options);
+            } else if (currentLang === 'ar') {
+                formattedDate = now.toLocaleDateString('ar-SA', options);
+            } else if (currentLang === 'fa') {
+                formattedDate = now.toLocaleDateString('fa-IR', options);
+            } else {
+                formattedDate = now.toLocaleDateString('fr-FR', options);
+            }
+            
+            // Capitaliser la première lettre pour les langues LTR
+            if (translations[currentLang].dir === 'ltr') {
+                formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+            }
+            
+            document.getElementById('gregorianDate').textContent = formattedDate;
+        }
+
+        // 3. CALENDRIER BAHÁ'Í PRÉCIS AVEC TRADUCTION
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
+
+        function getNawRuz(year) {
+            return new Date(year, 2, 20, 12, 0, 0);
+        }
+
+        function gregorianToBahai(gregorianDate) {
+            const year = gregorianDate.getFullYear();
+            const nawRuz = getNawRuz(year);
+            
+            let bahaiYear;
+            if (gregorianDate >= nawRuz) {
+                bahaiYear = year - 1843;
+            } else {
+                bahaiYear = year - 1844;
+            }
+            
+            const nawRuzYear = (gregorianDate >= nawRuz) ? year : year - 1;
+            const nawRuzRef = getNawRuz(nawRuzYear);
+            
+            const diffTime = gregorianDate - nawRuzRef;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            
+            if (diffDays < 1) {
+                return gregorianToBahai(new Date(nawRuzYear - 1, 11, 31));
+            }
+            
+            const isLeap = isLeapYear(nawRuzYear);
+            const intercalaryDays = isLeap ? 5 : 4;
+            
+            let bahaiMonth, bahaiDay;
+            
+            if (diffDays <= 342) {
+                bahaiMonth = Math.ceil(diffDays / 19);
+                bahaiDay = ((diffDays - 1) % 19) + 1;
+            } else if (diffDays <= 342 + intercalaryDays) {
+                bahaiMonth = 0;
+                bahaiDay = diffDays - 342;
+            } else {
+                bahaiMonth = 19;
+                bahaiDay = diffDays - (342 + intercalaryDays);
+            }
+            
+            return {
+                year: bahaiYear,
+                month: bahaiMonth,
+                day: bahaiDay,
+                dayName: BAHAI_DAYS[currentLang][(diffDays - 1) % 19],
+                totalDays: diffDays,
+                nawRuzYear: nawRuzYear
+            };
+        }
+
+        function updateBahaiDate() {
+            const now = new Date();
+            const bahai = gregorianToBahai(now);
+            
+            const t = translations[currentLang];
+            const months = BAHAI_MONTHS[currentLang];
+            
+            let dateText;
+            
+            if (bahai.month === 0) {
+                if (currentLang === 'ar' || currentLang === 'fa') {
+                    dateText = `${bahai.dayName}، ${bahai.day} أيام الهاء ${bahai.year}`;
+                } else {
+                    dateText = `${bahai.dayName}, ${bahai.day} Ayyám-i-Há ${bahai.year}`;
+                }
+            } else {
+                const monthName = months[bahai.month - 1];
+                if (currentLang === 'ar' || currentLang === 'fa') {
+                    dateText = `${bahai.dayName}، ${bahai.day} ${monthName} ${bahai.year}`;
+                } else {
+                    dateText = `${bahai.dayName}, ${bahai.day} ${monthName} ${bahai.year}`;
+                }
+            }
+            
+            document.getElementById('bahaiDate').textContent = dateText;
+        }
+
+        // 4. CALCUL PRÉCIS DES JOURS SAINTS BAHÁ'ÍS POUR 2026
+        function getNextHolyDays(currentDate) {
+            const t = translations[currentLang];
+            
+            const ayyamStart2026 = new Date(2026, 1, 24);
+            const ayyamEnd2026 = new Date(2026, 2, 1, 23, 59, 59);
+            const feastAla2026 = new Date(2026, 2, 2);
+            const nawRuz2026 = new Date(2026, 2, 20);
+            const feastBaha = new Date(2026, 2, 21);
+            
+            const holyDays = [];
+            
+            if (currentDate <= ayyamEnd2026) {
+                holyDays.push({
+                    type: 'ayyam',
+                    title: t.ayyamTitle,
+                    period: t.ayyamPeriod,
+                    note: t.ayyamNote,
+                    endDate: ayyamEnd2026
+                });
+            }
+            
+            if (currentDate < feastAla2026) {
+                holyDays.push({
+                    type: 'feast',
+                    title: t.feastAlaTitle,
+                    date: t.feastAlaDate,
+                    note: t.feastAlaNote,
+                    feastDate: feastAla2026
+                });
+            }
+            
+            if (currentDate >= nawRuz2026 && currentDate < feastBaha) {
+                holyDays.push({
+                    type: 'feast',
+                    title: t.feastBahaTitle,
+                    date: t.feastBahaDate,
+                    note: t.feastBahaNote,
+                    feastDate: feastBaha
+                });
+            }
+            
+            return holyDays;
+        }
+
+        // 5. AFFICHAGE DES JOURS SAINTS
+        function updateHolyDaysDisplay() {
+            const now = new Date();
+            const holyDays = getNextHolyDays(now);
+            const banner = document.getElementById('holyDaysBanner');
+            
+            banner.innerHTML = '';
+            
+            const relevantHolyDays = holyDays.filter(holyDay => {
+                if (holyDay.type === 'ayyam') {
+                    return now <= holyDay.endDate;
+                } else if (holyDay.type === 'feast') {
+                    return now < holyDay.feastDate;
+                }
+                return true;
+            });
+            
+            if (relevantHolyDays.length === 0) {
+                banner.style.display = 'none';
+                return;
+            } else {
+                banner.style.display = 'flex';
+            }
+            
+            const ayyam = relevantHolyDays.find(h => h.type === 'ayyam');
+            if (ayyam) {
+                const ayyamDiv = document.createElement('div');
+                ayyamDiv.className = 'holy-day-item holy-day-left';
+                ayyamDiv.innerHTML = `
+                    <div class="holy-day-title">${ayyam.title}</div>
+                    <div>${ayyam.period} ${ayyam.note}</div>
+                `;
+                banner.appendChild(ayyamDiv);
+            }
+            
+            const feast = relevantHolyDays.find(h => h.type === 'feast');
+            if (feast) {
+                const feastDiv = document.createElement('div');
+                feastDiv.className = 'holy-day-item holy-day-right';
+                feastDiv.innerHTML = `
+                    <div class="holy-day-title">${feast.title}</div>
+                    <div>${feast.date} ${feast.note}</div>
+                `;
+                banner.appendChild(feastDiv);
+            }
+        }
+
+        // 6. GÉOCODAGE INVERSE AMÉLIORÉ
+        async function reverseGeocode(latitude, longitude, lang) {
+            try {
+                let langCode = 'fr';
+                if (lang === 'en') langCode = 'en';
+                else if (lang === 'es') langCode = 'es';
+                else if (lang === 'ar') langCode = 'ar';
+                else if (lang === 'fa') langCode = 'fa';
+                
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&accept-language=${langCode}&addressdetails=1&zoom=18`,
+                    {
+                        headers: {
+                            'User-Agent': 'BahaiClockApp/1.0'
+                        }
+                    }
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.address) {
+                    const addr = data.address;
+                    const t = translations[lang];
+                    
+                    let country = '';
+                    let city = '';
+                    
+                    if (lang === 'ar') {
+                        country = addr.country_ar || addr.country || 'غير معروف';
+                        city = addr.city_ar || addr.town_ar || addr.village_ar || addr.city || addr.town || addr.village || '';
+                    } else if (lang === 'fa') {
+                        country = addr.country_fa || addr.country || 'ناشناخته';
+                        city = addr.city_fa || addr.town_fa || addr.village_fa || addr.city || addr.town || addr.village || '';
+                    } else {
+                        country = addr.country || 'Unknown';
+                        city = addr.city || addr.town || addr.village || '';
+                    }
+                    
+                    if (!city && addr.country_code === 'lu') {
+                        city = addr.state_district || addr.state || '';
+                    }
+                    
+                    if (city) {
+                        city = city.replace(/ \(commune\)$/i, '');
+                        return `${country}${t.separator}${city}`;
+                    } else {
+                        return country;
+                    }
+                } else {
+                    return translations[lang].locationUnsupported;
+                }
+            } catch (error) {
+                console.error('Reverse geocoding error:', error);
+                return translations[lang].locationDefault;
+            }
+        }
+
+        // 7. LEVER/COUCHER DU SOLEIL
+        async function fetchSunTimes(latitude, longitude) {
+            try {
+                const now = new Date();
+                const dateStr = now.toISOString().split('T')[0];
+                
+                const response = await fetch(
+                    `https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&date=${dateStr}&formatted=0`
+                );
+                
+                const data = await response.json();
+                
+                if (data.status === 'OK') {
+                    const sunriseUTC = new Date(data.results.sunrise);
+                    const sunsetUTC = new Date(data.results.sunset);
+                    
+                    const options = {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                    };
+                    
+                    const sunriseLocal = sunriseUTC.toLocaleTimeString('fr-FR', options);
+                    const sunsetLocal = sunsetUTC.toLocaleTimeString('fr-FR', options);
+                    
+                    document.getElementById('sunriseTime').textContent = sunriseLocal;
+                    document.getElementById('sunsetTime').textContent = sunsetLocal;
+                    document.getElementById('precisionIndicator').textContent = translations[currentLang].precisionExact;
+                    
+                    return true;
+                } else {
+                    throw new Error('API error');
+                }
+            } catch (error) {
+                console.error('API error:', error);
+                document.getElementById('precisionIndicator').textContent = translations[currentLang].precisionApproximate;
+                
+                if (Math.abs(latitude - 49.8153) < 2 && Math.abs(longitude - 6.1296) < 2) {
+                    document.getElementById('sunriseTime').textContent = '07:45';
+                    document.getElementById('sunsetTime').textContent = '17:45';
+                }
+                return false;
+            }
+        }
+
+        // 8. MISE À JOUR COMPLÈTE
+        async function updateLocationAndSunTimes() {
+            const t = translations[currentLang];
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        
+                        const locationText = await reverseGeocode(lat, lon, currentLang);
+                        document.getElementById('location').textContent = `📍 ${locationText}`;
+                        
+                        fetchSunTimes(lat, lon);
+                    },
+                    (error) => {
+                        console.error('Geolocation error:', error);
+                        document.getElementById('location').textContent = t.locationDefault;
+                        fetchSunTimes(49.8153, 6.1296);
+                    },
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+                );
+            } else {
+                document.getElementById('location').textContent = t.locationUnsupported;
+                fetchSunTimes(49.8153, 6.1296);
+            }
+        }
+
+        // 9. INITIALISATION DES MARQUES D'HEURES
+        function initClockMarks() {
+            const hourMarksContainer = document.getElementById('hourMarks');
+            
+            for (let i = 0; i < 60; i++) {
+                const mark = document.createElement('div');
+                mark.className = 'hour-mark';
+                mark.style.transform = `rotate(${i * 6}deg)`;
+                
+                const markDiv = document.createElement('div');
+                mark.appendChild(markDiv);
+                
+                hourMarksContainer.appendChild(mark);
+            }
+        }
+
+        // 10. GESTION DU SÉLECTEUR DE LANGUE
+        function setupLanguageSelector() {
+            const langSelector = document.getElementById('langSelector');
+            
+            const dropdown = document.createElement('div');
+            dropdown.className = 'language-dropdown';
+            dropdown.id = 'langDropdown';
+            
+            Object.keys(translations).forEach(langCode => {
+                const lang = translations[langCode];
+                const option = document.createElement('div');
+                option.className = 'language-option';
+                option.dataset.lang = langCode;
+                if (langCode === currentLang) {
+                    option.classList.add('active');
+                }
+                option.innerHTML = `
+                    <span class="language-flag">${lang.flag}</span>
+                    <span>${lang.langCode}</span>
+                `;
+                option.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    applyTranslations(langCode);
+                    dropdown.style.display = 'none';
+                });
+                dropdown.appendChild(option);
+            });
+            
+            langSelector.parentNode.appendChild(dropdown);
+            
+            langSelector.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            document.addEventListener('click', () => {
+                dropdown.style.display = 'none';
+            });
+        }
+
+        // ========== FONCTION PWA - INSTALLATION ==========
+
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('PWA: Installation disponible');
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').style.display = 'block';
+        });
+
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`PWA: Résultat de l'installation: ${outcome}`);
+                deferredPrompt = null;
+                document.getElementById('installBtn').style.display = 'none';
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA: Application installée avec succès');
+            document.getElementById('installBtn').style.display = 'none';
+        });
+
+        // ========== ENREGISTRER LE SERVICE WORKER ==========
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker enregistré', reg.scope))
+                    .catch(err => console.log('Erreur Service Worker', err));
+            });
+        }
+
+        // ========== INITIALISATION ET MISE À JOUR ==========
+
+        setupLanguageSelector();
+        applyTranslations(currentLang);
+        initClockMarks();
+
+        updateClock();
+        updateGregorianDate();
+        updateBahaiDate();
+        updateLocationAndSunTimes();
+
+        setInterval(updateClock, 60000);
+        
+        setInterval(() => {
+            updateGregorianDate();
+            updateBahaiDate();
+            updateHolyDaysDisplay();
+        }, 60000);
+
+        setInterval(updateLocationAndSunTimes, 43200000);
+    </script>
+</body>
+</html>
