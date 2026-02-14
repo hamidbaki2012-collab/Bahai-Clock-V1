@@ -34,11 +34,41 @@ self.addEventListener('activate', event => {
   return self.clients.claim();
 });
 
-self.addEventListener('fetch', event => {
-  if (event.request.url.includes('api.sunrise-sunset.org') || 
-      event.request.url.includes('nominatim.openstreetmap.org')) {
-    return;
+// Forcer une nouvelle détection si coordonnées > 24h anciennes
+function shouldForceGeolocation() {
+  const lastCheck = localStorage.getItem('lastGeolocationCheck');
+  if (!lastCheck) return true;
+  
+  const hoursSinceLastCheck = (Date.now() - parseInt(lastCheck)) / 3600000;
+  return hoursSinceLastCheck > 24;
+}
+
+// Dans updateLocationAndSunTimes() :
+async function updateLocationAndSunTimes() {
+  const t = translations[currentLang];
+  
+  // Forcer la géolocalisation si nécessaire
+  if (shouldForceGeolocation()) {
+    localStorage.removeItem('lastLocation');
   }
+  
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        
+        // Sauvegarder timestamp
+        localStorage.setItem('lastGeolocationCheck', Date.now().toString());
+        
+        const locationText = await reverseGeocode(lat, lon, currentLang);
+        document.getElementById('location').textContent = `📍 ${locationText}`;
+        fetchSunTimes(lat, lon);
+      },
+      // ... reste du code
+    );
+  }
+}
   
   event.respondWith(
     caches.match(event.request)
