@@ -1314,6 +1314,21 @@
         }, 60000);
 
         setInterval(updateLocationAndSunTimes, 43200000);
+        // Forcer détection fraîche dans les applications installées
+window.addEventListener('load', () => {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+    || window.navigator.standalone === true;
+  
+  if (isStandalone) {
+    console.log('APK détectée - Nettoyage cache géolocalisation...');
+    localStorage.removeItem('lastLocation');
+    localStorage.removeItem('lastGeolocationCheck');
+    
+    setTimeout(() => {
+      updateLocationAndSunTimes();
+    }, 1500);
+  }
+});
     </script>
 </body>
 </html>
