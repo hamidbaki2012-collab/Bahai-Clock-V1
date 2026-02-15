@@ -1,22 +1,20 @@
 {
+  "packageId": "com.bahai.clock",
+  "host": "https://hamidbaki2012-collab.github.io",
   "name": "Horloge Bahá'í",
-  "short_name": "Bahá'í Clock",
-  "description": "Horloge bahá'íe avec calendrier spirituel et heures de soleil",
-  "start_url": "index.html",
+  "startUrl": "/Bahai-Clock-V1/index.html",
+  "webManifestUrl": "https://hamidbaki2012-collab.github.io/Bahai-Clock-V1/manifest.json",
+  "fallbackType": "webview",
+  "enableNotifications": false,
   "display": "standalone",
-  "background_color": "#1a237e",
-  "theme_color": "#1a237e",
-  "icons": [
-    {
-      "src": "icons/icon-192x192-v2.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512x512-v2.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "lang": "fr"
+  "themeColor": "#1a237e",
+  "navigationColor": "#1a237e",
+  "backgroundColor": "#1a237e",
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "android"
+  },
+  "generatorApp": "bubblewrap-cli"
 }
