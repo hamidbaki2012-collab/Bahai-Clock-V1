@@ -9,9 +9,9 @@
     <meta name="apple-mobile-web-app-title" content="Horloge Bahá'í">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <!-- Manifest pour PWA - CHEMIN RELATIF -->
+    <!-- Manifest pour PWA -->
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icons/icon-192x192-v2.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     
     <title>Horloge Bahá'í</title>
     <style>
@@ -45,6 +45,7 @@
             width: 100%;
             border: 1px solid rgba(0, 0, 0, 0.05);
             overflow: hidden;
+            margin-bottom: 10px;
         }
 
         .header {
@@ -508,18 +509,9 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-                .container {
-            background: white;
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 25px 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15),
-                        0 5px 15px rgba(0, 0, 0, 0.1);
-            max-width: 100%;
-            width: 100%;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            margin-bottom: 10px; /* Ajouté pour espace avant pied de page */
+
+        .container {
+            animation: fadeIn 0.8s ease-out;
         }
 
         .dates-row {
@@ -586,72 +578,8 @@
             box-shadow: 0 5px 14px rgba(76, 175, 80, 0.5);
         }
 
-                #installBtn:active {
+        #installBtn:active {
             transform: translateY(0);
-        }
-                /* Pied de page - VERSION CORRIGÉE */
-        .footer-container {
-            margin-top: 20px;
-            padding: 12px 15px;
-            background: linear-gradient(135deg, #1a237e 0%, #2c3e50 100%);
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            width: 100%;
-            max-width: 100%;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 6px;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            line-height: 1.4;
-        }
-
-        .footer-content span {
-            white-space: nowrap;
-        }
-
-        .separator {
-            opacity: 0.6;
-            font-size: 12px;
-        }
-
-        /* Version mobile optimisée */
-        @media (max-width: 480px) {
-            .footer-container {
-                margin-top: 15px;
-                padding: 10px 12px;
-                border-radius: 12px;
-            }
-            
-            .footer-content {
-                font-size: 9px;
-                gap: 4px;
-            }
-            
-            .footer-content span {
-                font-size: 9px;
-            }
-        }
-
-        /* Version tablette/desktop */
-        @media (min-width: 768px) {
-            .footer-container {
-                margin-top: 25px;
-                padding: 15px 20px;
-                border-radius: 20px;
-            }
-            
-            .footer-content {
-                font-size: 11px;
-                gap: 8px;
-            }
         }
     </style>
 </head>
@@ -722,25 +650,12 @@
             <div class="precision-indicator" id="precisionIndicator">✅ Données précises</div>
         </div>
     </div>
-    <div class="container">
-        <!-- ... tout le contenu ... -->
-    </div>
 
-    <!-- Pied de page avec crédit/copyright -->
-    <div class="footer">
-        <div class="footer-content">
-            <span>Hamid Baki</span>
-            <span>•</span>
-            <span>App. version 1.0.0</span>
-            <span>•</span>
-            <span>© Copyright 2026</span>
-        </div>
-    </div>
-
-    <button id="installBtn">📲 Installer l'application</button>
     <button id="installBtn">📲 Installer l'application</button>
 
     <script>
+        // ========== SYSTÈME DE TRADUCTION MULTILINGUE ==========
+
         const translations = {
             fr: {
                 title: "🕐 Horloge Bahá'í",
@@ -874,6 +789,8 @@
             }
         };
 
+        // ========== TRADUCTIONS DES MOIS ET JOURS BAHÁ'ÍS ==========
+
         const BAHAI_MONTHS = {
             fr: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
@@ -890,6 +807,7 @@
             fa: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمت', 'کلمات', 'کمال', 'اسماء', 'عزت', 'مشیت', 'علم', 'قدرت', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملک', 'علاء']
         };
 
+        // Détection automatique de la langue
         function detectLanguage() {
             const savedLang = localStorage.getItem('bahaiClockLang');
             if (savedLang && translations[savedLang]) {
@@ -906,12 +824,14 @@
 
         let currentLang = detectLanguage();
 
+        // Application des traductions
         function applyTranslations(lang) {
             currentLang = lang;
             localStorage.setItem('bahaiClockLang', lang);
             
             const t = translations[lang];
             
+            // Mettre à jour tous les textes
             document.getElementById('title').innerHTML = `
                 ${t.title}
                 <div class="bahai-star-container">
@@ -931,9 +851,11 @@
             document.getElementById('location').textContent = t.locationDetecting;
             document.getElementById('precisionIndicator').textContent = t.precisionExact;
             
+            // Mettre à jour le sélecteur de langue
             document.getElementById('currentLang').textContent = t.langCode;
             document.getElementById('currentFlag').textContent = t.flag;
             
+            // Mettre à jour les options actives
             document.querySelectorAll('.language-option').forEach(option => {
                 option.classList.remove('active');
                 if (option.dataset.lang === lang) {
@@ -941,15 +863,24 @@
                 }
             });
             
+            // Direction du texte (RTL pour arabe et persan)
             document.documentElement.setAttribute('lang', lang);
             document.documentElement.setAttribute('dir', t.dir);
             
+            // Mettre à jour les jours saints
             updateHolyDaysDisplay();
+            
+            // Mettre à jour les dates
             updateGregorianDate();
             updateBahaiDate();
+            
+            // Mettre à jour la localisation avec la bonne langue
             updateLocationAndSunTimes();
         }
 
+        // ========== FONCTIONS PRINCIPALES ==========
+
+        // 1. MISE À JOUR DE L'HORLOGE
         function updateClock() {
             const now = new Date();
             const hours = now.getHours() % 12;
@@ -962,9 +893,11 @@
             document.getElementById('hourHand').style.transform = `rotate(${hourAngle}deg)`;
         }
 
+        // 2. DATE GREGORIENNE (avec traduction)
         function updateGregorianDate() {
             const now = new Date();
             
+            // Format selon la langue
             const options = { 
                 weekday: 'short', 
                 day: 'numeric', 
@@ -986,6 +919,7 @@
                 formattedDate = now.toLocaleDateString('fr-FR', options);
             }
             
+            // Capitaliser la première lettre pour les langues LTR
             if (translations[currentLang].dir === 'ltr') {
                 formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
             }
@@ -993,6 +927,7 @@
             document.getElementById('gregorianDate').textContent = formattedDate;
         }
 
+        // 3. CALENDRIER BAHÁ'Í PRÉCIS AVEC TRADUCTION
         function isLeapYear(year) {
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
@@ -1075,6 +1010,7 @@
             document.getElementById('bahaiDate').textContent = dateText;
         }
 
+        // 4. CALCUL PRÉCIS DES JOURS SAINTS BAHÁ'ÍS POUR 2026
         function getNextHolyDays(currentDate) {
             const t = translations[currentLang];
             
@@ -1119,6 +1055,7 @@
             return holyDays;
         }
 
+        // 5. AFFICHAGE DES JOURS SAINTS
         function updateHolyDaysDisplay() {
             const now = new Date();
             const holyDays = getNextHolyDays(now);
@@ -1165,6 +1102,7 @@
             }
         }
 
+        // 6. GÉOCODAGE INVERSE AMÉLIORÉ
         async function reverseGeocode(latitude, longitude, lang) {
             try {
                 let langCode = 'fr';
@@ -1225,6 +1163,7 @@
             }
         }
 
+        // 7. LEVER/COUCHER DU SOLEIL
         async function fetchSunTimes(latitude, longitude) {
             try {
                 const now = new Date();
@@ -1270,6 +1209,7 @@
             }
         }
 
+        // 8. MISE À JOUR COMPLÈTE
         async function updateLocationAndSunTimes() {
             const t = translations[currentLang];
             
@@ -1297,6 +1237,7 @@
             }
         }
 
+        // 9. INITIALISATION DES MARQUES D'HEURES
         function initClockMarks() {
             const hourMarksContainer = document.getElementById('hourMarks');
             
@@ -1312,6 +1253,7 @@
             }
         }
 
+        // 10. GESTION DU SÉLECTEUR DE LANGUE
         function setupLanguageSelector() {
             const langSelector = document.getElementById('langSelector');
             
@@ -1351,6 +1293,8 @@
             });
         }
 
+        // ========== FONCTION PWA - INSTALLATION ==========
+
         let deferredPrompt;
 
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -1375,7 +1319,8 @@
             document.getElementById('installBtn').style.display = 'none';
         });
 
-        // ========== ENREGISTRER LE SERVICE WORKER - CORRIGÉ ==========
+        // ========== ENREGISTRER LE SERVICE WORKER ==========
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('service-worker.js', { scope: './' })
@@ -1383,6 +1328,8 @@
                     .catch(err => console.log('Erreur Service Worker', err));
             });
         }
+
+        // ========== INITIALISATION ET MISE À JOUR ==========
 
         setupLanguageSelector();
         applyTranslations(currentLang);
@@ -1402,31 +1349,6 @@
         }, 60000);
 
         setInterval(updateLocationAndSunTimes, 43200000);
-        // Forcer détection fraîche dans les applications installées
-window.addEventListener('load', () => {
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
-    || window.navigator.standalone === true;
-  
-  if (isStandalone) {
-    console.log('APK détectée - Nettoyage cache géolocalisation...');
-    localStorage.removeItem('lastLocation');
-    localStorage.removeItem('lastGeolocationCheck');
-    
-    setTimeout(() => {
-      updateLocationAndSunTimes();
-    }, 1500);
-  }
-});
     </script>
-        <!-- Pied de page avec crédit/copyright - VERSION CORRIGÉE -->
-    <div class="footer-container">
-        <div class="footer-content">
-            <span>Hamid Baki</span>
-            <span class="separator">•</span>
-            <span>App. version 1.0.0</span>
-            <span class="separator">•</span>
-            <span>© Copyright 2026</span>
-        </div>
-    </div>
 </body>
-</html>  
+</html>
