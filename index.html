@@ -648,7 +648,7 @@
 
             <div class="location" id="location">📍 Détection de la localisation...</div>
             <div class="precision-indicator" id="precisionIndicator">✅ Données précises</div>
-			<div style="margin-top:15px;font-size:10px;color:#6c757d;text-align:center;opacity:0.8">Hamid Baki • v1.0.0 • ©2026</div>
+			<div style="margin-top:15px;font-size:10px;color:#6c757d;text-align:center;opacity:0.8">Hamid Baki • v1.0.1 • ©2026</div>
         </div>
     </div>
 
@@ -662,7 +662,7 @@
                 title: "🕐 Horloge Bahá'í",
                 subtitle: "Temps et Calendrier Spirituel",
                 gregorianLabel: "Date Grégorienne",
-                bahaiLabel: "Date Bahá'í",
+                bahaiLabel: "Date Bahá'íe",
                 sunriseLabel: "Lever du soleil",
                 sunsetLabel: "Coucher du soleil",
                 locationDetecting: "📍 Détection de la localisation...",
@@ -681,6 +681,32 @@
                 feastBahaNote: "(après coucher du soleil du 20 mars)",
                 langCode: "FR",
                 flag: "🇫🇷",
+                dir: "ltr",
+                separator: " - "
+            },
+			lu: {
+                title: "🕐 Bahá'í Auer",
+                subtitle: "Spirituell Zäit a Kalenner",
+                gregorianLabel: "Spirituell Zäit a Kalenner",
+                bahaiLabel: "Bahá'í Datum",
+                sunriseLabel: "Sonnenopgang",
+                sunsetLabel: "Sonnenënnergang",
+                locationDetecting: "📍 Standuert Detektioun...",
+                locationDefault: "📍 Lëtzebuerg (Standard)",
+                locationUnsupported: "📍 Geolocation net ënnerstëtzt",
+                precisionExact: "✅ Genau Daten",
+                precisionApproximate: "⚠️ Ongeféier Daten",
+                ayyamTitle: "Ayyám-i-Há",
+                ayyamPeriod: "24. Februar - 1. Mäerz",
+                ayyamNote: "(nach Sonnenënnergang)",
+                feastAlaTitle: "19-Deeg Feier 'Alá'",
+                feastAlaDate: "2. Mäerz",
+                feastAlaNote: "(nach Sonnenënnergang den 1. Mäerz)",
+                feastBahaTitle: "19-Deeg Feier Bahá",
+                feastBahaDate: "21. Mäerz",
+                feastBahaNote: "(nach Sonnenënnergang den 20. Mäerz)",
+                langCode: "LU",
+                flag: "🇱🇺",
                 dir: "ltr",
                 separator: " - "
             },
@@ -820,7 +846,8 @@
 
         const BAHAI_MONTHS = {
             fr: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
-            en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            lu: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+		    en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             es: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             pt: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
 			ar: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمة', 'كلمات', 'كمال', 'اسماء', 'عزت', 'مشية', 'علم', 'قدرة', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملك', 'علاء'],
@@ -829,7 +856,8 @@
 
         const BAHAI_DAYS = {
             fr: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
-            en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            lu: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+			en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             es: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             pt: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
 			ar: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمة', 'كلمات', 'كمال', 'اسماء', 'عزت', 'مشية', 'علم', 'قدرة', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملك', 'علاء'],
@@ -948,6 +976,8 @@
                 formattedDate = now.toLocaleDateString('fa-IR', options);
             } else {
                 formattedDate = now.toLocaleDateString('fr-FR', options);
+			} else {
+                formattedDate = now.toLocaleDateString('lu-LU', options);	
             }
             
             // Capitaliser la première lettre pour les langues LTR
