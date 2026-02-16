@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 
-<!-- Ajoutez CES LIGNES pour les icônes iOS -->
+    <!-- Ajoutez CES LIGNES pour les icônes iOS -->
     <link rel="apple-touch-icon" href="icons/apple-touch-icon-180x180.png">
     <link rel="apple-touch-icon" sizes="167x167" href="icons/apple-touch-icon-167x167.png">
     <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-touch-icon-152x152.png">
@@ -59,6 +59,21 @@
             margin-bottom: 10px;
         }
 
+       /* Écran de chargement personnalisé (sans splash screen iOS) */
+        body {
+          background: linear-gradient(135deg, #1a237e 0%, #2c3e50 100%);
+          color: white;
+       }
+
+       .container {
+       opacity: 0;
+       transition: opacity 0.3s ease;
+       }
+
+       body.loaded .container {
+         opacity: 1;
+       }
+		
         .header {
             text-align: center;
             margin-bottom: 20px;
@@ -1460,6 +1475,11 @@
         }, 60000);
 
         setInterval(updateLocationAndSunTimes, 43200000);
+    </script>
+	<script>
+      window.addEventListener('load', () => {
+        document.body.classList.add('loaded');
+      });
     </script>
 </body>
 </html>
