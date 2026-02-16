@@ -974,10 +974,10 @@
                 formattedDate = now.toLocaleDateString('ar-SA', options);
             } else if (currentLang === 'fa') {
                 formattedDate = now.toLocaleDateString('fa-IR', options);
+			} else if (currentLang === 'lu') {
+                formattedDate = now.toLocaleDateString('lu-LU', options);	
             } else {
                 formattedDate = now.toLocaleDateString('fr-FR', options);
-			} else {
-                formattedDate = now.toLocaleDateString('lu-LU', options);	
             }
             
             // Capitaliser la première lettre pour les langues LTR
