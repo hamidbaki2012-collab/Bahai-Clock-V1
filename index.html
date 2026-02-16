@@ -609,93 +609,139 @@
         }
 
 		/* ========== OPTIMISATION DESKTOP (1024px+) ========== */
+/* ========== CORRECTION AFFICHAGE DESKTOP (horloge circulaire parfaite) ========== */
 @media (min-width: 1024px) {
-    /* Fond blanc pur pour éviter le bleu du manifest */
+    /* Fond blanc obligatoire */
     body {
         background-color: #ffffff !important;
         background-image: none !important;
-        padding: 20px;
+        padding: 30px 20px !important;
     }
     
-    /* Conteneur centré avec max-width adapté */
+    /* Conteneur principal centré */
     .container {
-        max-width: 900px;
-        padding: 50px 40px !important;
-        margin: 20px auto !important;
-        box-shadow: 0 15px 60px rgba(0, 0, 0, 0.12),
-                    0 8px 25px rgba(0, 0, 0, 0.08);
+        max-width: 1000px !important;
+        padding: 40px 50px !important;
+        margin: 0 auto !important;
     }
     
-    /* Horloge CARRÉE et proportionnelle */
+    /* ===== CORRECTION CRITIQUE : HORLOGE CARRÉE SANS COMPRESSION ===== */
+    .dates-row {
+        flex-direction: row !important;
+        align-items: center !important; /* Centre verticalement */
+        justify-content: center !important;
+        gap: 40px !important;
+        width: 100% !important;
+    }
+    
+    /* Conteneur horloge : CARRÉ ABSOLU + protection anti-compression */
     .clock-container {
-        width: 420px !important;
-        height: 420px !important;
-        margin: 25px auto !important;
+        width: 450px !important;
+        height: 450px !important;
+        flex-shrink: 0 !important; /* INTERDIT la compression ! */
+        margin: 0 !important;
     }
     
-    /* Ajustement des éléments de l'horloge */
+    /* Visage de l'horloge : circulaire garanti */
     .clock-face {
-        border-width: 14px !important;
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 50% !important;
     }
     
+    /* Mains d'horloge proportionnelles */
     .hour-hand {
-        height: 150px !important;
+        height: 160px !important;
         width: 7px !important;
         margin-left: -3.5px !important;
     }
     
     .minute-hand {
-        height: 210px !important;
+        height: 225px !important;
         width: 3.5px !important;
         margin-left: -1.75px !important;
     }
     
     .clock-center {
-        width: 20px !important;
-        height: 20px !important;
+        width: 22px !important;
+        height: 22px !important;
     }
     
-    /* Titre plus grand */
+    /* ===== CORRECTION CRITIQUE : BLOCS SOLEIL RÉDUITS ===== */
+    .date-card {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        min-height: 450px !important; /* Hauteur identique à l'horloge */
+        height: auto !important;
+        width: 280px !important;
+        padding: 15px 0 !important;
+    }
+    
+    /* Réduction DRAMATIQUE de la hauteur des blocs soleil */
+    .sun-info {
+        padding: 8px 12px !important; /* Réduit de 12px → 8px */
+        min-height: auto !important;
+        height: auto !important;
+        border-radius: 12px !important; /* Plus compact */
+    }
+    
+    .sun-icon {
+        font-size: 18px !important; /* Réduit */
+        line-height: 1 !important;
+    }
+    
+    .sun-label {
+        font-size: 9px !important; /* Réduit */
+        margin-bottom: 2px !important;
+    }
+    
+    .sun-time {
+        font-size: 14px !important; /* Réduit */
+        font-weight: 600 !important;
+    }
+    
+    /* Ajustement dates */
+    .date-label {
+        font-size: 11px !important;
+    }
+    
+    .date-value {
+        font-size: 18px !important;
+        line-height: 1.3 !important;
+    }
+    
+    /* Titre plus élégant */
     .header h1 {
-        font-size: 46px !important;
+        font-size: 48px !important;
     }
     
     .bahai-star-container {
-        width: 55px !important;
-        height: 55px !important;
+        width: 50px !important;
+        height: 50px !important;
     }
     
-    /* Dates sur une ligne */
-    .dates-row {
-        flex-direction: row !important;
-        gap: 30px !important;
-    }
-    
-    .date-card {
-        width: calc(50% - 15px) !important;
-    }
-    
-    /* Pied de page centré */
+    /* Pied de page */
     .credit-line {
         font-size: 11px !important;
         margin-top: 15px !important;
     }
 }
 
-/* ========== ÉCRANS TRÈS LARGES (1440px+) ========== */
+/* Écrans très larges (1440px+) */
 @media (min-width: 1440px) {
-    .container {
-        max-width: 1000px !important;
-        padding: 60px 50px !important;
+    .clock-container {
+        width: 500px !important;
+        height: 500px !important;
     }
     
-    .clock-container {
-        width: 480px !important;
-        height: 480px !important;
+    .date-card {
+        min-height: 500px !important;
+        width: 300px !important;
     }
     
     .header h1 {
-        font-size: 52px !important;
+        font-size: 54px !important;
     }
 		
     </style>
