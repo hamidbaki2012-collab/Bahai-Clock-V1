@@ -875,6 +875,34 @@
             fa: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمت', 'کلمات', 'کمال', 'اسماء', 'عزت', 'مشیت', 'علم', 'قدرت', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملک', 'علاء']
         };
 
+       // ========== TRADUCTIONS DES JOURS ET MOIS GREGORIENS ==========
+
+       const GREGORIAN_DAYS = {
+           fr: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+           en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+           es: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+           pt: ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'],
+           lu: ['Sonndeg', 'Méindeg', 'Dënschdeg', 'Mëttwoch', 'Donneschdeg', 'Freideg', 'Samschdeg'],
+           ar: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+           fa: ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه']
+       };
+
+     const GREGORIAN_MONTHS = {
+    fr: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+    en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    es: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+    pt: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+    lu: ['Januar', 'Februar', 'Mäerz', 'Abrëll', 'Mee', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+    ar: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+    fa: ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر']
+      };
+
+        // Conversion chiffres → chiffres persans
+        function toPersianDigits(num) {
+        const persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        return num.toString().replace(/\d/g, d => persian[d]);
+      }
+		
         // Détection automatique de la langue
         function detectLanguage() {
             const savedLang = localStorage.getItem('bahaiClockLang');
@@ -961,43 +989,53 @@
             document.getElementById('hourHand').style.transform = `rotate(${hourAngle}deg)`;
         }
 
-        // 2. DATE GREGORIENNE (avec traduction)
+        // 2. DATE GREGORIENNE (traduction manuelle précise pour toutes les langues)
         function updateGregorianDate() {
             const now = new Date();
-            
-            // Format selon la langue
-            const options = { 
-                weekday: 'short', 
-                day: 'numeric', 
-                month: 'short', 
-                year: 'numeric' 
-            };
-            
-            let formattedDate;
-            
-            if (currentLang === 'en') {
-                formattedDate = now.toLocaleDateString('en-US', options);
-            } else if (currentLang === 'es') {
-                formattedDate = now.toLocaleDateString('es-ES', options);
-			} else if (currentLang === 'pt') {
-                formattedDate = now.toLocaleDateString('pt-PT', options);	
-            } else if (currentLang === 'ar') {
-                formattedDate = now.toLocaleDateString('ar-SA', options);
-            } else if (currentLang === 'fa') {
-                formattedDate = now.toLocaleDateString('fa-IR', options);
-			} else if (currentLang === 'lu') {
-                formattedDate = now.toLocaleDateString('lu-LU', options);	
-            } else {
-                formattedDate = now.toLocaleDateString('fr-FR', options);
-            }
-            
-            // Capitaliser la première lettre pour les langues LTR
-            if (translations[currentLang].dir === 'ltr') {
-                formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-            }
-            
-            document.getElementById('gregorianDate').textContent = formattedDate;
-        }
+            const dayIndex = now.getDay(); // 0=dimanche → 6=samedi
+            const day = now.getDate();
+            const monthIndex = now.getMonth();
+            const year = now.getFullYear();
+    
+            const lang = currentLang;
+            const days = GREGORIAN_DAYS[lang] || GREGORIAN_DAYS.fr;
+            const months = GREGORIAN_MONTHS[lang] || GREGORIAN_MONTHS.fr;
+    
+            let formatted;
+    
+            switch(lang) {
+                case 'fr':
+                    formatted = `${days[dayIndex].charAt(0).toUpperCase() + days[dayIndex].slice(1)}, ${day} ${months[monthIndex]} ${year}`;
+                    break;
+                case 'en':
+                    formatted = `${days[dayIndex]}, ${months[monthIndex]} ${day}, ${year}`;
+                    break;
+                case 'es':
+                    // "Lunes 16 de febrero de 2026"
+                    formatted = `${days[dayIndex].charAt(0).toUpperCase() + days[dayIndex].slice(1)} ${day} de ${months[monthIndex]} de ${year}`;
+                    break;
+                case 'pt':
+                   // "Segunda-feira, 16 de fevereiro de 2026"
+                   formatted = `${days[dayIndex]}, ${day} de ${months[monthIndex]} de ${year}`;
+                   break;
+                case 'lu':
+                   // "Méindeg, 16. Februar 2026"
+                   formatted = `${days[dayIndex]}, ${day}. ${months[monthIndex]} ${year}`;
+                  break;
+                case 'ar':
+                  // RTL : "الاثنين، 16 فبراير 2026"
+                  formatted = `${days[dayIndex]}، ${day} ${months[monthIndex]} ${year}`;
+                  break;
+                case 'fa':
+                 // RTL + chiffres persans : "دوشنبه، ۱۶ فوریه ۲۰۲۶"
+                 formatted = `${days[dayIndex]}، ${toPersianDigits(day)} ${months[monthIndex]} ${toPersianDigits(year)}`;
+                 break;
+                 default:
+                 formatted = `${days[dayIndex].charAt(0).toUpperCase() + days[dayIndex].slice(1)}, ${day} ${months[monthIndex]} ${year}`;
+    }
+    
+    document.getElementById('gregorianDate').textContent = formatted;
+    }
 
         // 3. CALENDRIER BAHÁ'Í PRÉCIS AVEC TRADUCTION
         function isLeapYear(year) {
