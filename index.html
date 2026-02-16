@@ -607,6 +607,97 @@
         #installBtn:active {
             transform: translateY(0);
         }
+
+		/* ========== OPTIMISATION DESKTOP (1024px+) ========== */
+@media (min-width: 1024px) {
+    /* Fond blanc pur pour éviter le bleu du manifest */
+    body {
+        background-color: #ffffff !important;
+        background-image: none !important;
+        padding: 20px;
+    }
+    
+    /* Conteneur centré avec max-width adapté */
+    .container {
+        max-width: 900px;
+        padding: 50px 40px !important;
+        margin: 20px auto !important;
+        box-shadow: 0 15px 60px rgba(0, 0, 0, 0.12),
+                    0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Horloge CARRÉE et proportionnelle */
+    .clock-container {
+        width: 420px !important;
+        height: 420px !important;
+        margin: 25px auto !important;
+    }
+    
+    /* Ajustement des éléments de l'horloge */
+    .clock-face {
+        border-width: 14px !important;
+    }
+    
+    .hour-hand {
+        height: 150px !important;
+        width: 7px !important;
+        margin-left: -3.5px !important;
+    }
+    
+    .minute-hand {
+        height: 210px !important;
+        width: 3.5px !important;
+        margin-left: -1.75px !important;
+    }
+    
+    .clock-center {
+        width: 20px !important;
+        height: 20px !important;
+    }
+    
+    /* Titre plus grand */
+    .header h1 {
+        font-size: 46px !important;
+    }
+    
+    .bahai-star-container {
+        width: 55px !important;
+        height: 55px !important;
+    }
+    
+    /* Dates sur une ligne */
+    .dates-row {
+        flex-direction: row !important;
+        gap: 30px !important;
+    }
+    
+    .date-card {
+        width: calc(50% - 15px) !important;
+    }
+    
+    /* Pied de page centré */
+    .credit-line {
+        font-size: 11px !important;
+        margin-top: 15px !important;
+    }
+}
+
+/* ========== ÉCRANS TRÈS LARGES (1440px+) ========== */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1000px !important;
+        padding: 60px 50px !important;
+    }
+    
+    .clock-container {
+        width: 480px !important;
+        height: 480px !important;
+    }
+    
+    .header h1 {
+        font-size: 52px !important;
+    }
+		
     </style>
 </head>
 <body>
