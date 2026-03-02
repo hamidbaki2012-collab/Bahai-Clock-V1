@@ -12,18 +12,7 @@
     <!-- Manifest pour PWA -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-
-    <!-- Ajoutez CES LIGNES pour les icônes iOS -->
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon-180x180.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="icons/apple-touch-icon-167x167.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="icons/apple-touch-icon-120x120.png">
-	
-	<!-- Splash screens iOS (optionnel mais élégant) -->
-    <link href="splash/apple-splash-2048-2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" rel="apple-touch-startup-image" />
-    <link href="splash/apple-splash-2732-2048.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" rel="apple-touch-startup-image" />
-    <!-- ... (ajoutez toutes les tailles nécessaires) ... -->	
-	
+    
     <title>Horloge Bahá'í</title>
     <style>
         * {
@@ -59,21 +48,6 @@
             margin-bottom: 10px;
         }
 
-       /* Écran de chargement personnalisé (sans splash screen iOS) */
-        body {
-          background: linear-gradient(135deg, #1a237e 0%, #2c3e50 100%);
-          color: white;
-       }
-
-       .container {
-       opacity: 0;
-       transition: opacity 0.3s ease;
-       }
-
-       body.loaded .container {
-         opacity: 1;
-       }
-		
         .header {
             text-align: center;
             margin-bottom: 20px;
@@ -207,17 +181,36 @@
             margin-bottom: 12px;
             flex-wrap: wrap;
         }
-
+		
         .holy-day-item {
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 10px 14px;
+            padding: 8px 12px; /* Réduit pour plus de place */
             border-radius: 14px;
-            font-size: 11px;
+            font-size: 10px; /* Plus petit */
             font-weight: 500;
             border: 1.5px solid rgba(0, 0, 0, 0.08);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-            min-width: 150px;
+            min-width: 220px; /* Plus large pour tout le texte */
             max-width: 100%;
+         white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .holy-day-title {
+            font-weight: 600;
+            font-size: 10px;
+            line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .holy-day-item div:last-child {
+            font-size: 9px; /* Réduit pour la date */
+            line-height: 1.3;
+            opacity: 0.9;
+
         }
 
         .holy-day-left {
@@ -229,12 +222,6 @@
             border-right: 3px solid #4361ee;
             color: #3a56d4;
             text-align: right;
-        }
-
-        .holy-day-title {
-            font-weight: 600;
-            margin-bottom: 3px;
-            font-size: 12px;
         }
 
         .main-content {
@@ -608,142 +595,122 @@
             transform: translateY(0);
         }
 
-		/* ========== OPTIMISATION DESKTOP (1024px+) ========== */
-/* ========== CORRECTION AFFICHAGE DESKTOP (horloge circulaire parfaite) ========== */
-@media (min-width: 1024px) {
-    /* Fond blanc obligatoire */
-    body {
-        background-color: #ffffff !important;
-        background-image: none !important;
-        padding: 30px 20px !important;
-    }
-    
-    /* Conteneur principal centré */
-    .container {
-        max-width: 1000px !important;
-        padding: 40px 50px !important;
-        margin: 0 auto !important;
-    }
-    
-    /* ===== CORRECTION CRITIQUE : HORLOGE CARRÉE SANS COMPRESSION ===== */
-    .dates-row {
-        flex-direction: row !important;
-        align-items: center !important; /* Centre verticalement */
-        justify-content: center !important;
-        gap: 40px !important;
-        width: 100% !important;
-    }
-    
-    /* Conteneur horloge : CARRÉ ABSOLU + protection anti-compression */
-    .clock-container {
-        width: 450px !important;
-        height: 450px !important;
-        flex-shrink: 0 !important; /* INTERDIT la compression ! */
-        margin: 0 !important;
-    }
-    
-    /* Visage de l'horloge : circulaire garanti */
-    .clock-face {
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 50% !important;
-    }
-    
-    /* Mains d'horloge proportionnelles */
-    .hour-hand {
-        height: 160px !important;
-        width: 7px !important;
-        margin-left: -3.5px !important;
-    }
-    
-    .minute-hand {
-        height: 225px !important;
-        width: 3.5px !important;
-        margin-left: -1.75px !important;
-    }
-    
-    .clock-center {
-        width: 22px !important;
-        height: 22px !important;
-    }
-    
-    /* ===== CORRECTION CRITIQUE : BLOCS SOLEIL RÉDUITS ===== */
-    .date-card {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        min-height: 450px !important; /* Hauteur identique à l'horloge */
-        height: auto !important;
-        width: 280px !important;
-        padding: 15px 0 !important;
-    }
-    
-    /* Réduction DRAMATIQUE de la hauteur des blocs soleil */
-    .sun-info {
-        padding: 8px 12px !important; /* Réduit de 12px → 8px */
-        min-height: auto !important;
-        height: auto !important;
-        border-radius: 12px !important; /* Plus compact */
-    }
-    
-    .sun-icon {
-        font-size: 18px !important; /* Réduit */
-        line-height: 1 !important;
-    }
-    
-    .sun-label {
-        font-size: 9px !important; /* Réduit */
-        margin-bottom: 2px !important;
-    }
-    
-    .sun-time {
-        font-size: 14px !important; /* Réduit */
-        font-weight: 600 !important;
-    }
-    
-    /* Ajustement dates */
-    .date-label {
-        font-size: 11px !important;
-    }
-    
-    .date-value {
-        font-size: 18px !important;
-        line-height: 1.3 !important;
-    }
-    
-    /* Titre plus élégant */
-    .header h1 {
-        font-size: 48px !important;
-    }
-    
-    .bahai-star-container {
-        width: 50px !important;
-        height: 50px !important;
-    }
-    
-    /* Pied de page */
-    .credit-line {
-        font-size: 11px !important;
-        margin-top: 15px !important;
-    }
-}
+        /* ========== OPTIMISATION DESKTOP (1024px+) ========== */
+        @media (min-width: 1024px) {
+            body {
+                padding: 30px 20px;
+            }
+            
+            .container {
+                max-width: 1000px;
+                padding: 40px 50px;
+                margin: 0 auto;
+            }
+            
+            .dates-row {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                gap: 40px;
+                width: 100%;
+            }
+            
+            .clock-container {
+                width: 450px;
+                height: 450px;
+                flex-shrink: 0;
+                margin: 0;
+            }
+            
+            .clock-face {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+            
+            .hour-hand {
+                height: 160px;
+                width: 7px;
+                margin-left: -3.5px;
+            }
+            
+            .minute-hand {
+                height: 225px;
+                width: 3.5px;
+                margin-left: -1.75px;
+            }
+            
+            .clock-center {
+                width: 22px;
+                height: 22px;
+            }
+            
+            .date-card {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                min-height: 450px;
+                height: auto;
+                width: 280px;
+                padding: 15px 0;
+            }
+            
+            .sun-info {
+                padding: 8px 12px;
+                min-height: auto;
+                height: auto;
+                border-radius: 12px;
+            }
+            
+            .sun-icon {
+                font-size: 18px;
+                line-height: 1;
+            }
+            
+            .sun-label {
+                font-size: 9px;
+                margin-bottom: 2px;
+            }
+            
+            .sun-time {
+                font-size: 14px;
+                font-weight: 600;
+            }
+            
+            .date-label {
+                font-size: 11px;
+            }
+            
+            .date-value {
+                font-size: 18px;
+                line-height: 1.3;
+            }
+            
+            .header h1 {
+                font-size: 48px;
+            }
+            
+            .bahai-star-container {
+                width: 50px;
+                height: 50px;
+            }
+        }
 
-/* Écrans très larges (1440px+) */
-@media (min-width: 1440px) {
-    .clock-container {
-        width: 500px !important;
-        height: 500px !important;
-    }
-    
-    .date-card {
-        min-height: 500px !important;
-        width: 300px !important;
-    }
-    
-    .header h1 {
-        font-size: 54px !important;
-    }
-		
+        @media (min-width: 1440px) {
+            .clock-container {
+                width: 500px;
+                height: 500px;
+            }
+            
+            .date-card {
+                min-height: 500px;
+                width: 300px;
+            }
+            
+            .header h1 {
+                font-size: 54px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -770,7 +737,7 @@
                     </svg>
                 </div>
             </h1>
-            <div class="subtitle" id="subtitle">Temps et Calendrier Spirituel</div>
+            <div class="subtitle" id="subtitle">« Le jeûne est le symbole de l'abnégation de soi-même et de la consécration à Dieu. » — Bahá'u'lláh</div>
         </div>
 
         <div class="main-content">
@@ -811,7 +778,7 @@
 
             <div class="location" id="location">📍 Détection de la localisation...</div>
             <div class="precision-indicator" id="precisionIndicator">✅ Données précises</div>
-			<div style="margin-top:15px;font-size:10px;color:#6c757d;text-align:center;opacity:0.8">Hamid Baki • v1.0.1 • ©2026</div>
+            <div style="margin-top:15px;font-size:10px;color:#6c757d;text-align:center;opacity:0.8">Hamid Baki • v1.0.1 • ©2026</div>
         </div>
     </div>
 
@@ -819,11 +786,10 @@
 
     <script>
         // ========== SYSTÈME DE TRADUCTION MULTILINGUE ==========
-
         const translations = {
             fr: {
                 title: "🕐 Horloge Bahá'í",
-                subtitle: "Temps et Calendrier Spirituel",
+                subtitle: "« Le jeûne est le symbole de l'abnégation de soi-même et de la consécration à Dieu. » — Bahá'u'lláh",
                 gregorianLabel: "Date Grégorienne",
                 bahaiLabel: "Date Bahá'íe",
                 sunriseLabel: "Lever du soleil",
@@ -842,12 +808,15 @@
                 feastBahaTitle: "Fête 19j Bahá",
                 feastBahaDate: "le 21 mars",
                 feastBahaNote: "(après coucher du soleil du 20 mars)",
+                nawRuzTitle: "Naw-Rúz",
+                nawRuzDate: "le 20 mars",
+                nawRuzNote: "(après coucher du soleil)",
                 langCode: "FR",
                 flag: "🇫🇷",
                 dir: "ltr",
                 separator: " - "
             },
-			lu: {
+            lu: {
                 title: "🕐 Bahá'í Auer",
                 subtitle: "Spirituell Zäit a Kalenner",
                 gregorianLabel: "Gregorianesche Datum",
@@ -868,6 +837,9 @@
                 feastBahaTitle: "19-Deeg Feier Bahá",
                 feastBahaDate: "21. Mäerz",
                 feastBahaNote: "(no Sonnenënnergang den 20. Mäerz)",
+                nawRuzTitle: "Naw-Rúz",
+                nawRuzDate: "20. Mäerz",
+                nawRuzNote: "(no Sonnenënnergang)",
                 langCode: "LU",
                 flag: "🇱🇺",
                 dir: "ltr",
@@ -894,6 +866,9 @@
                 feastBahaTitle: "19-Day Feast Bahá",
                 feastBahaDate: "March 21",
                 feastBahaNote: "(after sunset on March 20)",
+                nawRuzTitle: "Naw-Rúz",
+                nawRuzDate: "March 20",
+                nawRuzNote: "(after sunset)",
                 langCode: "EN",
                 flag: "🇬🇧",
                 dir: "ltr",
@@ -920,11 +895,14 @@
                 feastBahaTitle: "Fiesta de 19 días Bahá",
                 feastBahaDate: "21 de marzo",
                 feastBahaNote: "(después de la puesta del sol del 20 de marzo)",
+                nawRuzTitle: "Naw-Rúz",
+                nawRuzDate: "20 de marzo",
+                nawRuzNote: "(después de la puesta del sol)",
                 langCode: "ES",
                 flag: "🇪🇸",
                 dir: "ltr",
                 separator: " - "
-	    	},
+            },
             pt: {
                 title: "🕐 Relógio Bahá'í",
                 subtitle: "Tempo e calendário espiritual",
@@ -946,6 +924,9 @@
                 feastBahaTitle: "Festa de 19 dias Bahá",
                 feastBahaDate: "Março 21",
                 feastBahaNote: "(após o pôr do sol de 20 de março)",
+                nawRuzTitle: "Naw-Rúz",
+                nawRuzDate: "20 de Março",
+                nawRuzNote: "(após o pôr do sol)",
                 langCode: "PT",
                 flag: "🇵🇹",
                 dir: "ltr",
@@ -972,6 +953,9 @@
                 feastBahaTitle: "عيد 19 يوماً بهاء",
                 feastBahaDate: "21 مارس",
                 feastBahaNote: "(بعد غروب الشمس في 20 مارس)",
+                nawRuzTitle: "نوروز",
+                nawRuzDate: "20 مارس",
+                nawRuzNote: "(بعد غروب الشمس)",
                 langCode: "AR",
                 flag: "🇦🇪",
                 dir: "rtl",
@@ -998,6 +982,9 @@
                 feastBahaTitle: "جشن ۱۹ روزه بهاء",
                 feastBahaDate: "۲۱ مارس",
                 feastBahaNote: "(بعد از غروب آفتاب در ۲۰ مارس)",
+                nawRuzTitle: "نوروز",
+                nawRuzDate: "۲۰ مارس",
+                nawRuzNote: "(بعد از غروب آفتاب)",
                 langCode: "FA",
                 flag: "🇮🇷",
                 dir: "rtl",
@@ -1006,55 +993,53 @@
         };
 
         // ========== TRADUCTIONS DES MOIS ET JOURS BAHÁ'ÍS ==========
-
         const BAHAI_MONTHS = {
             fr: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             lu: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
-		    en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             es: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             pt: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
-			ar: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمة', 'كلمات', 'كمال', 'اسماء', 'عزت', 'مشية', 'علم', 'قدرة', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملك', 'علاء'],
+            ar: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمة', 'كلمات', 'كمال', 'اسماء', 'عزت', 'مشية', 'علم', 'قدرة', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملك', 'علاء'],
             fa: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمت', 'کلمات', 'کمال', 'اسماء', 'عزت', 'مشیت', 'علم', 'قدرت', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملک', 'علاء']
         };
 
         const BAHAI_DAYS = {
             fr: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             lu: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
-			en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
+            en: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             es: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
             pt: ['Bahá', 'Jalál', 'Jamál', '‘Aẓamat', 'Núr', 'Raḥmat', 'Kalimát', 'Kamál', 'Asmá’', '‘Izzat', 'Mashíyyat', '‘Ilm', 'Qudrat', 'Qawl', 'Masá’il', 'Sharaf', 'Sulṭán', 'Mulk', '‘Alá’'],
-			ar: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمة', 'كلمات', 'كمال', 'اسماء', 'عزت', 'مشية', 'علم', 'قدرة', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملك', 'علاء'],
+            ar: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمة', 'كلمات', 'كمال', 'اسماء', 'عزت', 'مشية', 'علم', 'قدرة', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملك', 'علاء'],
             fa: ['بهاء', 'جلال', 'جمال', 'عظمة', 'نور', 'رحمت', 'کلمات', 'کمال', 'اسماء', 'عزت', 'مشیت', 'علم', 'قدرت', 'قول', 'مسائل', 'شرف', 'سلطان', 'ملک', 'علاء']
         };
 
-       // ========== TRADUCTIONS DES JOURS ET MOIS GREGORIENS ==========
+        // ========== TRADUCTIONS DES JOURS ET MOIS GREGORIENS ==========
+        const GREGORIAN_DAYS = {
+            fr: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+            en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            es: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+            pt: ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'],
+            lu: ['Sonndeg', 'Méindeg', 'Dënschdeg', 'Mëttwoch', 'Donneschdeg', 'Freideg', 'Samschdeg'],
+            ar: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+            fa: ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه']
+        };
 
-       const GREGORIAN_DAYS = {
-           fr: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
-           en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-           es: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
-           pt: ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'],
-           lu: ['Sonndeg', 'Méindeg', 'Dënschdeg', 'Mëttwoch', 'Donneschdeg', 'Freideg', 'Samschdeg'],
-           ar: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
-           fa: ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه']
-       };
-
-     const GREGORIAN_MONTHS = {
-    fr: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
-    en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    es: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
-    pt: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
-    lu: ['Januar', 'Februar', 'Mäerz', 'Abrëll', 'Mee', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-    ar: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
-    fa: ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر']
-      };
+        const GREGORIAN_MONTHS = {
+            fr: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+            en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            es: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+            pt: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+            lu: ['Januar', 'Februar', 'Mäerz', 'Abrëll', 'Mee', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+            ar: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+            fa: ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر']
+        };
 
         // Conversion chiffres → chiffres persans
         function toPersianDigits(num) {
-        const persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-        return num.toString().replace(/\d/g, d => persian[d]);
-      }
-		
+            const persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+            return num.toString().replace(/\d/g, d => persian[d]);
+        }
+
         // Détection automatique de la langue
         function detectLanguage() {
             const savedLang = localStorage.getItem('bahaiClockLang');
@@ -1144,17 +1129,18 @@
         // 2. DATE GREGORIENNE (traduction manuelle précise pour toutes les langues)
         function updateGregorianDate() {
             const now = new Date();
+            
             const dayIndex = now.getDay(); // 0=dimanche → 6=samedi
             const day = now.getDate();
             const monthIndex = now.getMonth();
             const year = now.getFullYear();
-    
+            
             const lang = currentLang;
             const days = GREGORIAN_DAYS[lang] || GREGORIAN_DAYS.fr;
             const months = GREGORIAN_MONTHS[lang] || GREGORIAN_MONTHS.fr;
-    
+            
             let formatted;
-    
+            
             switch(lang) {
                 case 'fr':
                     formatted = `${days[dayIndex].charAt(0).toUpperCase() + days[dayIndex].slice(1)}, ${day} ${months[monthIndex]} ${year}`;
@@ -1167,27 +1153,27 @@
                     formatted = `${days[dayIndex].charAt(0).toUpperCase() + days[dayIndex].slice(1)} ${day} de ${months[monthIndex]} de ${year}`;
                     break;
                 case 'pt':
-                   // "Segunda-feira, 16 de fevereiro de 2026"
-                   formatted = `${days[dayIndex]}, ${day} de ${months[monthIndex]} de ${year}`;
-                   break;
+                    // "Segunda-feira, 16 de fevereiro de 2026"
+                    formatted = `${days[dayIndex]}, ${day} de ${months[monthIndex]} de ${year}`;
+                    break;
                 case 'lu':
-                   // "Méindeg, 16. Februar 2026"
-                   formatted = `${days[dayIndex]}, ${day}. ${months[monthIndex]} ${year}`;
-                  break;
+                    // "Méindeg, 16. Februar 2026"
+                    formatted = `${days[dayIndex]}, ${day}. ${months[monthIndex]} ${year}`;
+                    break;
                 case 'ar':
-                  // RTL : "الاثنين، 16 فبراير 2026"
-                  formatted = `${days[dayIndex]}، ${day} ${months[monthIndex]} ${year}`;
-                  break;
+                    // RTL : "الاثنين، 16 فبراير 2026"
+                    formatted = `${days[dayIndex]}، ${day} ${months[monthIndex]} ${year}`;
+                    break;
                 case 'fa':
-                 // RTL + chiffres persans : "دوشنبه، ۱۶ فوریه ۲۰۲۶"
-                 formatted = `${days[dayIndex]}، ${toPersianDigits(day)} ${months[monthIndex]} ${toPersianDigits(year)}`;
-                 break;
-                 default:
-                 formatted = `${days[dayIndex].charAt(0).toUpperCase() + days[dayIndex].slice(1)}, ${day} ${months[monthIndex]} ${year}`;
-    }
-    
-    document.getElementById('gregorianDate').textContent = formatted;
-    }
+                    // RTL + chiffres persans : "دوشنبه، ۱۶ فوریه ۲۰۲۶"
+                    formatted = `${days[dayIndex]}، ${toPersianDigits(day)} ${months[monthIndex]} ${toPersianDigits(year)}`;
+                    break;
+                default:
+                    formatted = `${days[dayIndex].charAt(0).toUpperCase() + days[dayIndex].slice(1)}, ${day} ${months[monthIndex]} ${year}`;
+            }
+            
+            document.getElementById('gregorianDate').textContent = formatted;
+        }
 
         // 3. CALENDRIER BAHÁ'Í PRÉCIS AVEC TRADUCTION
         function isLeapYear(year) {
@@ -1273,96 +1259,110 @@
         }
 
         // 4. CALCUL PRÉCIS DES JOURS SAINTS BAHÁ'ÍS POUR 2026
-        function getNextHolyDays(currentDate) {
-            const t = translations[currentLang];
-            
-            const ayyamStart2026 = new Date(2026, 1, 24);
-            const ayyamEnd2026 = new Date(2026, 2, 1, 23, 59, 59);
-            const feastAla2026 = new Date(2026, 2, 2);
-            const nawRuz2026 = new Date(2026, 2, 20);
-            const feastBaha = new Date(2026, 2, 21);
-            
-            const holyDays = [];
-            
-            if (currentDate <= ayyamEnd2026) {
-                holyDays.push({
-                    type: 'ayyam',
-                    title: t.ayyamTitle,
-                    period: t.ayyamPeriod,
-                    note: t.ayyamNote,
-                    endDate: ayyamEnd2026
-                });
-            }
-            
-            if (currentDate < feastAla2026) {
-                holyDays.push({
-                    type: 'feast',
-                    title: t.feastAlaTitle,
-                    date: t.feastAlaDate,
-                    note: t.feastAlaNote,
-                    feastDate: feastAla2026
-                });
-            }
-            
-            if (currentDate >= nawRuz2026 && currentDate < feastBaha) {
-                holyDays.push({
-                    type: 'feast',
-                    title: t.feastBahaTitle,
-                    date: t.feastBahaDate,
-                    note: t.feastBahaNote,
-                    feastDate: feastBaha
-                });
-            }
-            
-            return holyDays;
-        }
+function getNextHolyDays(currentDate) {
+    const t = translations[currentLang];
+    
+    // Dates importantes pour 2026
+    const ayyamStart2026 = new Date(2026, 1, 24); // 24 février
+    const ayyamEnd2026 = new Date(2026, 2, 1, 23, 59, 59); // 1 mars (fin)
+    const feastAla2026 = new Date(2026, 2, 2); // 2 mars (début du mois 'Alá')
+    const nawRuz2026 = new Date(2026, 2, 20); // 20 mars (Naw-Rúz)
+    const feastBaha2026 = new Date(2026, 2, 21); // 21 mars (Fête Bahá)
+    
+    const holyDays = [];
+    
+    // ========== Ayyám-i-Há (24 fév - 1 mars) ==========
+    if (currentDate <= ayyamEnd2026) {
+        holyDays.push({
+            type: 'ayyam',
+            title: t.ayyamTitle,
+            period: t.ayyamPeriod,
+            note: t.ayyamNote,
+            endDate: ayyamEnd2026
+        });
+    }
+    
+    // ========== Fête 'Alá' (2 mars uniquement) ==========
+    if (currentDate >= feastAla2026 && currentDate < new Date(2026, 2, 3)) {
+        holyDays.push({
+            type: 'feast',
+            title: t.feastAlaTitle,
+            date: t.feastAlaDate,
+            note: t.feastAlaNote,
+            feastDate: feastAla2026
+        });
+    }
+    
+    // ========== Naw-Rúz (affiche comme RAPPEL dès le 2 mars jusqu'au 20 mars) ==========
+    if (currentDate >= feastAla2026 && currentDate < nawRuz2026) {
+        holyDays.push({
+            type: 'nawruz',
+            title: t.nawRuzTitle,
+            date: t.nawRuzDate,
+            note: t.nawRuzNote,
+            feastDate: nawRuz2026
+        });
+    }
+    
+    // ========== Fête Bahá (affiche comme RAPPEL dès le 2 mars jusqu'au 21 mars) ==========
+    if (currentDate >= feastAla2026 && currentDate < feastBaha2026) {
+        holyDays.push({
+            type: 'feast',
+            title: t.feastBahaTitle,
+            date: t.feastBahaDate,
+            note: t.feastBahaNote,
+            feastDate: feastBaha2026
+        });
+    }
+    
+    return holyDays;
+}
 
-        // 5. AFFICHAGE DES JOURS SAINTS
-        function updateHolyDaysDisplay() {
-            const now = new Date();
-            const holyDays = getNextHolyDays(now);
-            const banner = document.getElementById('holyDaysBanner');
-            
-            banner.innerHTML = '';
-            
-            const relevantHolyDays = holyDays.filter(holyDay => {
-                if (holyDay.type === 'ayyam') {
-                    return now <= holyDay.endDate;
-                } else if (holyDay.type === 'feast') {
-                    return now < holyDay.feastDate;
-                }
-                return true;
-            });
-            
-            if (relevantHolyDays.length === 0) {
-                banner.style.display = 'none';
-                return;
-            } else {
-                banner.style.display = 'flex';
-            }
-            
-            const ayyam = relevantHolyDays.find(h => h.type === 'ayyam');
-            if (ayyam) {
-                const ayyamDiv = document.createElement('div');
-                ayyamDiv.className = 'holy-day-item holy-day-left';
-                ayyamDiv.innerHTML = `
-                    <div class="holy-day-title">${ayyam.title}</div>
-                    <div>${ayyam.period} ${ayyam.note}</div>
-                `;
-                banner.appendChild(ayyamDiv);
-            }
-            
-            const feast = relevantHolyDays.find(h => h.type === 'feast');
-            if (feast) {
-                const feastDiv = document.createElement('div');
-                feastDiv.className = 'holy-day-item holy-day-right';
-                feastDiv.innerHTML = `
-                    <div class="holy-day-title">${feast.title}</div>
-                    <div>${feast.date} ${feast.note}</div>
-                `;
-                banner.appendChild(feastDiv);
-            }
+       // 5. AFFICHAGE DES JOURS SAINTS (VERSION CORRIGÉE - AFFICHE TOUTES LES FÊTES)
+function updateHolyDaysDisplay() {
+    const now = new Date();
+    const holyDays = getNextHolyDays(now);
+    const banner = document.getElementById('holyDaysBanner');
+    
+    banner.innerHTML = '';
+    
+    const relevantHolyDays = holyDays.filter(holyDay => {
+        if (holyDay.type === 'ayyam') {
+            return now <= holyDay.endDate;
+        } else if (holyDay.type === 'feast' || holyDay.type === 'nawruz') {
+            return now < holyDay.feastDate;
         }
+        return true;
+    });
+    
+    if (relevantHolyDays.length === 0) {
+        banner.style.display = 'none';
+        return;
+    } else {
+        banner.style.display = 'flex';
+    }
+    
+    // Afficher TOUTES les fêtes (pas seulement la première !)
+    relevantHolyDays.forEach(holyDay => {
+        if (holyDay.type === 'ayyam') {
+            const ayyamDiv = document.createElement('div');
+            ayyamDiv.className = 'holy-day-item holy-day-left';
+            ayyamDiv.innerHTML = `
+                <div class="holy-day-title">${holyDay.title}</div>
+                <div>${holyDay.period} ${holyDay.note}</div>
+            `;
+            banner.appendChild(ayyamDiv);
+        } else if (holyDay.type === 'feast' || holyDay.type === 'nawruz') {
+            const feastDiv = document.createElement('div');
+            feastDiv.className = 'holy-day-item holy-day-right';
+            feastDiv.innerHTML = `
+                <div class="holy-day-title">${holyDay.title}</div>
+                <div>${holyDay.date} ${holyDay.note}</div>
+            `;
+            banner.appendChild(feastDiv);
+        }
+    });
+}
 
         // 6. GÉOCODAGE INVERSE AMÉLIORÉ
         async function reverseGeocode(latitude, longitude, lang) {
@@ -1370,7 +1370,7 @@
                 let langCode = 'fr';
                 if (lang === 'en') langCode = 'en';
                 else if (lang === 'es') langCode = 'es';
-				else if (lang === 'pt') langCode = 'pt';
+                else if (lang === 'pt') langCode = 'pt';
                 else if (lang === 'ar') langCode = 'ar';
                 else if (lang === 'fa') langCode = 'fa';
                 
@@ -1612,11 +1612,6 @@
         }, 60000);
 
         setInterval(updateLocationAndSunTimes, 43200000);
-    </script>
-	<script>
-      window.addEventListener('load', () => {
-        document.body.classList.add('loaded');
-      });
     </script>
 </body>
 </html>
